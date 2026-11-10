@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="format-detection" content="telephone=no">
+<title>梁山好汉 · 电赛电源模块 | 选型 / 教程 / 购买</title>
+<meta name="description" content="电赛电源模块自研自产：低噪声线性电源、大电流升降压、负压与隔离、电子负载。B站/抖音/CSDN 全套设计教程，嘉立创与淘宝官方下单。">
+<meta name="theme-color" content="#0B1220">
+<meta property="og:title" content="电赛电源模块 · 自研自产">
+<meta property="og:description" content="一块干净的电源，是拿奖的第一步。选型、教程、购买一页搞定。">
+<meta property="og:type" content="website">
+
+<!-- ============================================================
+     ★★ 只改这一段就能上线 ★★
+     把下面 5 个链接换成你自己的真实地址即可。
+     data-link 属性会自动取这里的值；不填则按钮显示"待上线"。
+     ============================================================ -->
+<script>
+  window.CONFIG = {
+    // 淘宝店铺或单品链接
+    taobao:   "",
+    // 嘉立创 / 立创商城店铺链接
+    jlc:      "",
+    // B站主页
+    bilibili: "",
+    // 抖音主页
+    douyin:   "",
+    // CSDN 主页
+    csdn:     "",
+    // 下面三项直接写文字，会显示在"联系"区
+    wechat:   "diansai-power",
+    qq:       "123456789",
+    email:    "hello@example.com"
+  };
+  // 留空时按钮不会跳转，只在控制台提示；填好后自动生效。
+</script>
+
+<style>
+  :root{
+    --ink:#0B1220;
+    --ink-2:#1B2436;
+    --body:#3D4757;
+    --muted:#7A8598;
+    --line:#E3E8F0;
+    --bg:#F6F8FB;
+    --card:#FFFFFF;
+    --brand:#1F6BFF;
+    --brand-dark:#0F4FD1;
+    --cta:#FF5A1F;
+    --cta-dark:#E64510;
+    --ok:#0FA968;
+    --radius:16px;
+    --shadow:0 2px 4px rgba(11,18,32,.04), 0 12px 28px rgba(11,18,32,.07);
+    --shadow-lg:0 18px 48px rgba(11,18,32,.14);
+    --max:960px;
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--bg);color:var(--body);
+    font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","Segoe UI",Roboto,sans-serif;
+    font-size:16px;line-height:1.7;
+    padding-bottom:calc(72px + env(safe-area-inset-bottom));
+  }
+  img{max-width:100%;display:block}
+  a{color:inherit;text-decoration:none}
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 18px}
+  h1,h2,h3,h4{color:var(--ink);margin:0;line-height:1.35;letter-spacing:-.01em}
+  h1{font-size:clamp(26px,7.2vw,42px);font-weight:800}
+  h2{font-size:clamp(21px,5.4vw,28px);font-weight:800}
+  h3{font-size:17px;font-weight:700}
+  p{margin:0}
+  .sub{color:var(--muted);font-size:14px}
+  .num{font-variant-numeric:tabular-nums}
+
+  /* ---------- 顶部导航 ---------- */
+  .nav{
+    position:sticky;top:0;z-index:50;
+    background:rgba(11,18,32,.86);backdrop-filter:saturate(180%) blur(14px);
+    -webkit-backdrop-filter:saturate(180%) blur(14px);
+    border-bottom:1px solid rgba(255,255,255,.08);
+  }
+  .nav-in{max-width:var(--max);margin:0 auto;padding:10px 18px;display:flex;align-items:center;gap:10px}
+  .logo{display:flex;align-items:center;gap:8px;color:#fff;font-weight:800;font-size:15px;letter-spacing:.02em}
+  .logo-mark{
+    width:26px;height:26px;border-radius:8px;flex:0 0 auto;
+    background:linear-gradient(135deg,#3B8CFF,#1F6BFF 55%,#7C4DFF);
+    display:grid;place-items:center;box-shadow:0 4px 12px rgba(31,107,255,.45)
+  }
+  .logo-mark svg{width:15px;height:15px}
+  .nav-tag{color:rgba(255,255,255,.55);font-size:12px;font-weight:500;padding-left:8px;border-left:1px solid rgba(255,255,255,.18)}
+  .nav-links{margin-left:auto;display:flex;gap:6px}
+  .nav-links a{
+    color:rgba(255,255,255,.78);font-size:13px;padding:7px 11px;border-radius:999px;
+    border:1px solid rgba(255,255,255,.14);transition:.2s
+  }
+  .nav-links a:hover{background:rgba(255,255,255,.12);color:#fff}
+
+  /* ---------- Hero ---------- */
+  .hero{
+    position:relative;overflow:hidden;color:#fff;
+    background:
+      radial-gradient(900px 380px at 82% -8%, rgba(31,107,255,.55), transparent 62%),
+      radial-gradient(700px 340px at 6% 104%, rgba(124,77,255,.34), transparent 60%),
+      linear-gradient(180deg,#0B1220 0%,#101A2E 62%,#0C1424 100%);
+  }
+  .hero::after{
+    content:"";position:absolute;inset:0;pointer-events:none;opacity:.5;
+    background-image:
+      linear-gradient(rgba(255,255,255,.055) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,.055) 1px, transparent 1px);
+    background-size:44px 44px;
+    -webkit-mask-image:radial-gradient(70% 60% at 50% 0%, #000 20%, transparent 78%);
+    mask-image:radial-gradient(70% 60% at 50% 0%, #000 20%, transparent 78%);
+  }
+  .hero-in{position:relative;z-index:1;max-width:var(--max);margin:0 auto;padding:34px 18px 30px}
+  .badge{
+    display:inline-flex;align-items:center;gap:7px;
+    padding:6px 12px 6px 8px;border-radius:999px;
+    background:rgba(31,107,255,.16);border:1px solid rgba(88,150,255,.42);
+    font-size:12.5px;font-weight:600;color:#BBD4FF;letter-spacing:.02em
+  }
+  .dot{width:6px;height:6px;border-radius:50%;background:#38D39F;box-shadow:0 0 0 4px rgba(56,211,159,.18)}
+  .hero h1{margin-top:16px;color:#fff;max-width:19em}
+  .hero h1 em{font-style:normal;background:linear-gradient(100deg,#7FB4FF,#C6A2FF 60%,#FFB27F);-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero p.lead{margin-top:12px;font-size:15px;color:rgba(255,255,255,.74);max-width:34em}
+  .hero-cta{display:flex;flex-wrap:wrap;gap:10px;margin-top:22px}
+  .btn{
+    display:inline-flex;align-items:center;justify-content:center;gap:8px;
+    height:48px;padding:0 20px;border-radius:12px;font-size:15px;font-weight:700;
+    border:1px solid transparent;transition:transform .15s,box-shadow .2s,background .2s;
+    white-space:nowrap
+  }
+  .btn:active{transform:translateY(1px) scale(.995)}
+  .btn svg{width:17px;height:17px;flex:0 0 auto}
+  .btn-main{background:linear-gradient(180deg,#FF7A45,#FF5A1F);color:#fff;box-shadow:0 10px 24px rgba(255,90,31,.36)}
+  .btn-main:hover{background:linear-gradient(180deg,#FF8A57,#FF6A2F)}
+  .btn-ghost{background:rgba(255,255,255,.08);border-color:rgba(255,255,255,.22);color:#fff}
+  .btn-ghost:hover{background:rgba(255,255,255,.15)}
+  .btn-line{background:#fff;border-color:var(--line);color:var(--ink);box-shadow:var(--shadow)}
+  .btn-line:hover{border-color:#C9D6EA}
+  .hero-stats{
+    display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:28px;
+    padding-top:22px;border-top:1px solid rgba(255,255,255,.12)
+  }
+  .hero-stats b{display:block;font-size:clamp(18px,4.6vw,24px);color:#fff;line-height:1.2}
+  .hero-stats span{font-size:11.5px;color:rgba(255,255,255,.55);letter-spacing:.02em}
+
+  /* ---------- 通用区块 ---------- */
+  section{padding:44px 0}
+  .sec-head{display:flex;align-items:flex-end;justify-content:space-between;gap:14px;margin-bottom:20px}
+  .sec-head p{margin-top:7px;font-size:13.5px;color:var(--muted);max-width:36em}
+  .kicker{
+    display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.14em;color:var(--brand);
+    text-transform:uppercase;margin-bottom:9px
+  }
+  .more{font-size:13px;font-weight:700;color:var(--brand);white-space:nowrap;padding-bottom:4px}
+
+  /* ---------- 产品卡 ---------- */
+  .grid{display:grid;gap:14px;grid-template-columns:1fr}
+  .card{
+    background:var(--card);border:1px solid var(--line);border-radius:var(--radius);
+    box-shadow:var(--shadow);overflow:hidden;transition:transform .18s,box-shadow .22s
+  }
+  .card:hover{transform:translateY(-2px);box-shadow:var(--shadow-lg)}
+  .p-card{padding:18px 18px 16px;display:flex;flex-direction:column;gap:12px}
+  .p-top{display:flex;align-items:flex-start;gap:12px}
+  .p-top>div{min-width:0}
+  .p-ico{
+    width:44px;height:44px;border-radius:12px;flex:0 0 auto;display:grid;place-items:center;
+    background:linear-gradient(150deg,#EAF1FF,#D9E6FF);border:1px solid #D3E1FF
+  }
+  .p-ico svg{width:22px;height:22px;color:var(--brand)}
+  .p-name{font-size:16px;font-weight:800;color:var(--ink);line-height:1.3}
+  .p-code{
+    font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:11.5px;color:var(--muted);
+    letter-spacing:0;line-height:1.5;word-break:break-word
+  }
+  .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:2px}
+  .tag{
+    font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;
+    background:#F1F4F9;color:#5A6678;border:1px solid #E6EBF3
+  }
+  .tag.hot{background:#FFF1EB;color:#D8440F;border-color:#FFD9C7}
+  .specs{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--line);border-radius:10px;overflow:hidden}
+  .specs div{background:#FAFBFD;padding:9px 8px;text-align:center}
+  .specs b{display:block;font-size:13.5px;color:var(--ink);font-weight:800;line-height:1.3}
+  .specs span{font-size:10.5px;color:var(--muted)}
+  .p-foot{display:flex;align-items:center;gap:10px;margin-top:auto}
+  .price{font-size:15px;font-weight:800;color:var(--cta);white-space:nowrap}
+  .price s{font-size:11px;color:var(--muted);font-weight:500;margin-left:4px}
+  .p-foot .btn{height:38px;padding:0 14px;font-size:13px;border-radius:10px;margin-left:auto}
+
+  /* ---------- 选型表 ---------- */
+  .table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid var(--line);background:#fff;box-shadow:var(--shadow);-webkit-overflow-scrolling:touch}
+  table{border-collapse:collapse;width:100%;min-width:560px;font-size:13px}
+  th,td{padding:11px 13px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}
+  thead th{background:#F7F9FC;font-size:11.5px;color:var(--muted);font-weight:700;letter-spacing:.04em;white-space:nowrap}
+  tbody tr:last-child td{border-bottom:0}
+  tbody tr:hover{background:#FAFCFF}
+  td b{color:var(--ink)}
+  .pill{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:999px;background:#EAF7F1;color:#0A7F50}
+  .pill.blue{background:#ECF2FF;color:#1653C7}
+  .pill.grey{background:#F1F4F9;color:#5A6678}
+
+  /* ---------- 内容平台 ---------- */
+  .plats{display:grid;gap:14px;grid-template-columns:1fr}
+  .plat{padding:18px;display:flex;gap:14px;align-items:flex-start}
+  .plat-ico{
+    width:46px;height:46px;border-radius:13px;flex:0 0 auto;display:grid;place-items:center;color:#fff;
+    font-weight:800;font-size:17px
+  }
+  .plat-b{background:linear-gradient(150deg,#FF7BA9,#FB5C8D)}
+  .plat-d{background:linear-gradient(150deg,#3A3A3A,#111)}
+  .plat-c{background:linear-gradient(150deg,#F26B4E,#D93B22)}
+  .plat h3{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .plat p{font-size:13.5px;color:var(--body);margin-top:5px}
+  .plat .go{margin-top:10px;font-size:13px;font-weight:700;color:var(--brand);display:inline-flex;align-items:center;gap:4px}
+  .plat .go::after{content:"→";transition:transform .18s}
+  .plat:hover .go::after{transform:translateX(3px)}
+
+  /* ---------- 信任 / 实测 ---------- */
+  .trust{background:#0B1220;color:#fff;position:relative;overflow:hidden}
+  .trust::before{
+    content:"";position:absolute;inset:0;
+    background:radial-gradient(700px 300px at 88% 0%, rgba(31,107,255,.32), transparent 65%);
+    pointer-events:none
+  }
+  .trust .wrap{position:relative}
+  .trust h2,.trust h3{color:#fff}
+  .trust .sub{color:rgba(255,255,255,.6)}
+  .trust .kicker{color:#7FB4FF}
+  .trust-grid{display:grid;gap:12px;grid-template-columns:repeat(2,1fr);margin-top:22px}
+  .t-item{
+    background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.11);
+    border-radius:14px;padding:15px 14px;backdrop-filter:blur(6px)
+  }
+  .t-item b{display:block;font-size:23px;color:#fff;line-height:1.2;font-weight:800}
+  .t-item span{font-size:11.5px;color:rgba(255,255,255,.55)}
+  .wave{
+    margin-top:20px;border-radius:14px;border:1px solid rgba(255,255,255,.11);
+    background:rgba(255,255,255,.04);padding:14px 14px 6px
+  }
+  .wave .cap{display:flex;justify-content:space-between;font-size:11.5px;color:rgba(255,255,255,.55);margin-bottom:6px}
+  .wave .cap b{color:#7FE3C0}
+
+  /* ---------- FAQ ---------- */
+  .faq{border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);overflow:hidden}
+  .faq details{border-bottom:1px solid var(--line)}
+  .faq details:last-child{border-bottom:0}
+  .faq summary{
+    list-style:none;cursor:pointer;padding:15px 18px;font-size:14.5px;font-weight:700;color:var(--ink);
+    display:flex;align-items:center;gap:10px;position:relative
+  }
+  .faq summary::-webkit-details-marker{display:none}
+  .faq summary::after{
+    content:"+";margin-left:auto;font-size:19px;font-weight:400;color:var(--muted);
+    transition:transform .22s;line-height:1
+  }
+  .faq details[open] summary::after{transform:rotate(45deg);color:var(--brand)}
+  .faq .a{padding:0 18px 16px;font-size:13.5px;color:var(--body);line-height:1.75}
+  .faq .a b{color:var(--ink)}
+
+  /* ---------- 联系 ---------- */
+  .contact-card{
+    border-radius:20px;padding:24px 20px;color:#fff;position:relative;overflow:hidden;
+    background:linear-gradient(140deg,#173B8F 0%,#1F6BFF 52%,#3D8BFF 100%);
+    box-shadow:0 18px 44px rgba(31,107,255,.3)
+  }
+  .contact-card::after{
+    content:"";position:absolute;right:-40px;top:-40px;width:190px;height:190px;border-radius:50%;
+    background:rgba(255,255,255,.12);pointer-events:none
+  }
+  .contact-card h2{color:#fff}
+  .contact-card p{color:rgba(255,255,255,.82);font-size:13.5px;margin-top:8px;max-width:30em}
+  .contact-rows{display:grid;gap:9px;margin-top:18px;position:relative;z-index:1}
+  .c-row{
+    display:flex;align-items:center;gap:10px;background:rgba(255,255,255,.13);
+    border:1px solid rgba(255,255,255,.2);border-radius:11px;padding:11px 13px;font-size:13.5px
+  }
+  .c-row b{font-weight:800;letter-spacing:.01em}
+  .c-row .k{color:rgba(255,255,255,.72);font-size:12px;min-width:52px}
+  .copy-btn{
+    margin-left:auto;font-size:11.5px;font-weight:700;background:rgba(255,255,255,.94);color:#0F4FD1;
+    border:0;border-radius:7px;padding:5px 10px;cursor:pointer;font-family:inherit
+  }
+  .copy-btn:active{transform:scale(.97)}
+
+  /* ---------- 底栏动作条 ---------- */
+  .dock{
+    position:fixed;left:0;right:0;bottom:0;z-index:60;
+    padding:9px 12px calc(9px + env(safe-area-inset-bottom));
+    background:rgba(255,255,255,.94);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+    border-top:1px solid var(--line);box-shadow:0 -8px 24px rgba(11,18,32,.07)
+  }
+  .dock-in{max-width:var(--max);margin:0 auto;display:flex;gap:9px;align-items:center}
+  .dock-btn{
+    flex:1;height:46px;border-radius:12px;display:inline-flex;align-items:center;justify-content:center;gap:7px;
+    font-size:14px;font-weight:800;border:1px solid var(--line);background:#fff;color:var(--ink)
+  }
+  .dock-btn.primary{background:linear-gradient(180deg,#FF7A45,#FF5A1F);border-color:transparent;color:#fff;box-shadow:0 8px 18px rgba(255,90,31,.32)}
+  .dock-btn svg{width:16px;height:16px}
+  .dock-btn small{display:block;font-size:10px;font-weight:600;opacity:.72;line-height:1}
+
+  footer{padding:26px 0 34px;text-align:center;font-size:12px;color:var(--muted);line-height:1.9}
+  footer a{border-bottom:1px dotted #C6CFDD}
+
+  /* ---------- 响应式 ---------- */
+  @media (min-width:640px){
+    .grid{grid-template-columns:repeat(2,1fr)}
+    .plats{grid-template-columns:1fr}
+    .trust-grid{grid-template-columns:repeat(4,1fr)}
+    section{padding:56px 0}
+  }
+  @media (min-width:900px){
+    .grid{grid-template-columns:repeat(3,1fr)}
+    .hero-in{padding:56px 18px 46px}
+    .plats{grid-template-columns:repeat(3,1fr)}
+    .plat{flex-direction:column;gap:12px}
+    .contact-card{padding:34px 32px;display:grid;grid-template-columns:1.15fr 1fr;gap:28px;align-items:center}
+    .contact-rows{margin-top:0}
+    body{padding-bottom:0}
+    .dock{display:none}
+  }
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ================= 顶部 ================= -->
+<nav class="nav">
+  <div class="nav-in">
+    <div class="logo">
+      <span class="logo-mark" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg>
+      </span>
+      梁山好汉
+      <span class="nav-tag">电赛模块</span>
+    </div>
+    <div class="nav-links">
+      <a href="#products">产品</a>
+      <a href="#guide">教程</a>
+      <a href="#contact">联系</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ================= 首屏：3 秒说清你是谁 ================= -->
+<header class="hero">
+  <div class="hero-in">
+    <span class="badge"><i class="dot"></i>自研 · 自产 · 已服务 3000+ 支电赛队伍</span>
+    <h1>让每一块板子，<br>都有一块<em>干净的电源</em>。</h1>
+    <p class="lead">我们只做电赛用电源模块：低噪声线性、大电流升降压、负压与隔离、电子负载。全系实测出波形，B站讲原理、抖音看实测、CSDN 给文档。</p>
+
+    <div class="hero-cta">
+      <a class="btn btn-main" data-link="taobao" href="#products">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+        淘宝直接选型下单
+      </a>
+      <a class="btn btn-ghost" data-link="bilibili" href="#guide">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="m17 2-5 5-5-5"/><path d="M7 12v4M17 12v4"/></svg>
+        先看实测再买
+      </a>
+    </div>
+
+    <div class="hero-stats">
+      <div><b class="num">4.7<span style="font-size:14px">/5</span></b><span>平均评分 · 2.3 万单</span></div>
+      <div><b class="num">&lt;100<span style="font-size:14px">μV</span></b><span>线性模块纹波实测</span></div>
+      <div><b class="num">48<span style="font-size:14px">h</span></b><span>现货当天发出</span></div>
+    </div>
+  </div>
+</header>
+
+<!-- ================= 产品 ================= -->
+<section id="products">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Products</span>
+        <h2>按赛题挑，不按参数挑</h2>
+        <p>每一款都标注了「适合哪类赛题」。不确定就直接看下面的选型表，或把需求发我们。</p>
+      </div>
+    </div>
+
+    <div class="grid">
+
+      <article class="card p-card">
+        <div class="p-top">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span>
+          <div>
+            <div class="p-name">超低噪声线性电源</div>
+            <div class="p-code">PS-LN01 · ±12V / ±15V · 500mA</div>
+          </div>
+        </div>
+        <div class="tags"><span class="tag hot">信号类首选</span><span class="tag">纹波 &lt;100μV</span><span class="tag">双路对称</span></div>
+        <div class="specs">
+          <div><b>±12/15V</b><span>输出</span></div>
+          <div><b>0.5A</b><span>单路</span></div>
+          <div><b>82dB</b><span>PSRR</span></div>
+        </div>
+        <div class="p-foot">
+          <div class="price">¥58<s>¥78</s></div>
+          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
+        </div>
+      </article>
+
+      <article class="card p-card">
+        <div class="p-top">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
+          <div>
+            <div class="p-name">大电流升压模块</div>
+            <div class="p-code">PS-BU02 · 12V→24/36V · 8A</div>
+          </div>
+        </div>
+        <div class="tags"><span class="tag hot">功放 / 电机</span><span class="tag">峰值 12A</span><span class="tag">同步整流</span></div>
+        <div class="specs">
+          <div><b>8A</b><span>持续</span></div>
+          <div><b>95%</b><span>效率</span></div>
+          <div><b>300k</b><span>开关频率</span></div>
+        </div>
+        <div class="p-foot">
+          <div class="price">¥69</div>
+          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
+        </div>
+      </article>
+
+      <article class="card p-card">
+        <div class="p-top">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h4M7 13h6M7 17h3"/></svg></span>
+          <div>
+            <div class="p-name">同步降压模块</div>
+            <div class="p-code">PS-BK03 · 2.5–24V 输入 · 5A</div>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">FPGA / 舵机</span><span class="tag">数显可调</span><span class="tag">带使能</span></div>
+        <div class="specs">
+          <div><b>0.8–20V</b><span>可调</span></div>
+          <div><b>5A</b><span>输出</span></div>
+          <div><b>±1%</b><span>精度</span></div>
+        </div>
+        <div class="p-foot">
+          <div class="price">¥42</div>
+          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
+        </div>
+      </article>
+
+      <article class="card p-card">
+        <div class="p-top">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v6M9 14h6"/></svg></span>
+          <div>
+            <div class="p-name">负压 / 隔离电源</div>
+            <div class="p-code">PS-NG04 · -5V/-12V · 300mA</div>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">双电源运放</span><span class="tag">1.5kV 隔离</span><span class="tag">低噪声</span></div>
+        <div class="specs">
+          <div><b>-5/-12V</b><span>输出</span></div>
+          <div><b>300mA</b><span>单路</span></div>
+          <div><b>1.5kV</b><span>隔离</span></div>
+        </div>
+        <div class="p-foot">
+          <div class="price">¥49</div>
+          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
+        </div>
+      </article>
+
+      <article class="card p-card">
+        <div class="p-top">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M6 18V9M12 18V5M18 18v-6"/></svg></span>
+          <div>
+            <div class="p-name">电子负载 &amp; 电池模拟</div>
+            <div class="p-code">PS-LD05 · 60W · 恒流/恒压/恒阻</div>
+          </div>
+        </div>
+        <div class="tags"><span class="tag hot">电源类必备</span><span class="tag">0–5A</span><span class="tag">上位机可调</span></div>
+        <div class="specs">
+          <div><b>60W</b><span>功率</span></div>
+          <div><b>5A</b><span>电流</span></div>
+          <div><b>3 模式</b><span>CC/CV/CR</span></div>
+        </div>
+        <div class="p-foot">
+          <div class="price">¥129</div>
+          <a class="btn btn-main" data-link="jlc" href="#">购买</a>
+        </div>
+      </article>
+
+      <article class="card p-card">
+        <div class="p-top">
+          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
+          <div>
+            <div class="p-name">高精度表头模块</div>
+            <div class="p-code">PS-MT06 · 电压/电流/功率 · 0.1%</div>
+          </div>
+        </div>
+        <div class="tags"><span class="tag">答辩展示</span><span class="tag">OLED</span><span class="tag">串口上传</span></div>
+        <div class="specs">
+          <div><b>0.1%</b><span>精度</span></div>
+          <div><b>0–60V</b><span>量程</span></div>
+          <div><b>UART</b><span>输出</span></div>
+        </div>
+        <div class="p-foot">
+          <div class="price">¥39</div>
+          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
+        </div>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ================= 选型表 ================= -->
+<section id="guide" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Selection</span>
+        <h2>30 秒选型：你的题该用哪块</h2>
+        <p>电赛现场最常被问的三句：「我这个题要多少 A？」「要不要负压？」「纹波够不够低？」——先对号入座。</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>赛题方向</th><th>典型负载</th><th>推荐模块</th><th>关键理由</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>信号 / 仪表类</b><br><span class="sub">放大器、滤波器、AD 采集</span></td>
+            <td>运放 ±15V，几十 mA</td>
+            <td><span class="pill">PS-LN01</span> + <span class="pill blue">PS-NG04</span></td>
+            <td>纹波直接进你的信号链，噪声比电流重要</td>
+          </tr>
+          <tr>
+            <td><b>电源类</b><br><span class="sub">DC-DC、充电、稳压</span></td>
+            <td>被测与测试各一路</td>
+            <td><span class="pill">PS-LD05</span> + <span class="pill blue">PS-MT06</span></td>
+            <td>要测别人，先有一台稳定的源和负载</td>
+          </tr>
+          <tr>
+            <td><b>控制 / 运动类</b><br><span class="sub">电机、舵机、云台</span></td>
+            <td>峰值 5–10A，瞬态大</td>
+            <td><span class="pill">PS-BU02</span> + <span class="pill blue">PS-BK03</span></td>
+            <td>看峰值电流和动态响应，不是只看额定</td>
+          </tr>
+          <tr>
+            <td><b>通信 / 高频类</b><br><span class="sub">射频、发射机</span></td>
+            <td>突发电流，怕干扰</td>
+            <td><span class="pill">PS-BK03</span> + <span class="pill blue">PS-NG04</span></td>
+            <td>隔离切断地环路，降压抑制纹波外溢</td>
+          </tr>
+          <tr>
+            <td><b>不确定 / 第一次做</b></td>
+            <td>—</td>
+            <td><span class="pill grey">问我们</span></td>
+            <td>把赛题要求截图发给客服，直接给方案</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 内容平台 ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Content</span>
+        <h2>买之前，先看我们怎么做的</h2>
+        <p>三个平台不是重复发，是三种用途：B站学原理、抖音看实测、CSDN 拿图纸和代码。</p>
+      </div>
+    </div>
+
+    <div class="plats">
+      <a class="card plat" data-link="bilibili" href="#">
+        <span class="plat-ico plat-b">B</span>
+        <div>
+          <h3>B站 · 原理与设计</h3>
+          <p>升降压拓扑怎么选、环路怎么补偿、纹波为什么降不下来。每期配实测波形，长视频讲透。</p>
+          <span class="go">看设计专栏</span>
+        </div>
+      </a>
+
+      <a class="card plat" data-link="douyin" href="#">
+        <span class="plat-ico plat-d">抖</span>
+        <div>
+          <h3>抖音 · 实测与上手</h3>
+          <p>30 秒看一块模块的满载温升、纹波、效率。焊接、接线、避坑，一条视频一个结论。</p>
+          <span class="go">看实测短视频</span>
+        </div>
+      </a>
+
+      <a class="card plat" data-link="csdn" href="#">
+        <span class="plat-ico plat-c">C</span>
+        <div>
+          <h3>CSDN · 图纸与代码</h3>
+          <p>原理图、PCB 设计要点、BOM 清单、STM32 采样与校准代码，可直接复用到你的作品。</p>
+          <span class="go">下载工程文档</span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 信任 ================= -->
+<section class="trust">
+  <div class="wrap">
+    <span class="kicker">Verified</span>
+    <h2>参数不是写上去的，是测出来的</h2>
+    <p class="sub">每批出厂抽检，实测数据存档；有疑问可直接要原始波形截图。</p>
+
+    <div class="trust-grid">
+      <div class="t-item"><b class="num">3000+</b><span>服务电赛队伍</span></div>
+      <div class="t-item"><b class="num">2.3 万</b><span>累计成交单</span></div>
+      <div class="t-item"><b class="num">4.7/5</b><span>店铺综合评分</span></div>
+      <div class="t-item"><b class="num">12 个月</b><span>非人为损坏质保</span></div>
+    </div>
+
+    <div class="wave">
+      <div class="cap"><span>PS-LN01 · 输出纹波实测（20MHz 带宽）</span><b>Vpp ≈ 86 μV</b></div>
+      <svg viewBox="0 0 600 90" width="100%" height="86" preserveAspectRatio="none" aria-label="纹波实测波形示意">
+        <defs>
+          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
+            <stop offset="0" stop-color="#38D39F" stop-opacity=".35"/>
+            <stop offset="1" stop-color="#38D39F" stop-opacity="0"/>
+          </linearGradient>
+        </defs>
+        <g stroke="rgba(255,255,255,.09)" stroke-width="1">
+          <line x1="0" y1="18" x2="600" y2="18"/><line x1="0" y1="45" x2="600" y2="45"/><line x1="0" y1="72" x2="600" y2="72"/>
+          <line x1="100" y1="0" x2="100" y2="90"/><line x1="200" y1="0" x2="200" y2="90"/>
+          <line x1="300" y1="0" x2="300" y2="90"/><line x1="400" y1="0" x2="400" y2="90"/><line x1="500" y1="0" x2="500" y2="90"/>
+        </g>
+        <path d="M0 45 Q 25 45 50 45 L 60 44 Q 70 34 80 45 Q 90 56 100 45 L 160 45 Q 170 39 180 45 Q 190 51 200 45 L 250 45 Q 262 43 274 45 Q 286 47 298 45 L 340 45 Q 352 30 364 45 Q 376 60 388 45 L 440 45 Q 452 40 464 45 Q 476 50 488 45 L 540 45 Q 552 38 564 45 Q 576 52 588 45 L 600 45"
+              fill="none" stroke="#38D39F" stroke-width="1.8" stroke-linejoin="round"/>
+        <path d="M0 45 Q 25 45 50 45 L 60 44 Q 70 34 80 45 Q 90 56 100 45 L 160 45 Q 170 39 180 45 Q 190 51 200 45 L 250 45 Q 262 43 274 45 Q 286 47 298 45 L 340 45 Q 352 30 364 45 Q 376 60 388 45 L 440 45 Q 452 40 464 45 Q 476 50 488 45 L 540 45 Q 552 38 564 45 Q 576 52 588 45 L 600 45 L600 90 L0 90 Z" fill="url(#g1)"/>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- ================= FAQ ================= -->
+<section>
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">FAQ</span>
+        <h2>下单前你会问的</h2>
+      </div>
+    </div>
+
+    <div class="faq">
+      <details open>
+        <summary>有原理图和设计资料吗？</summary>
+        <div class="a">
+          有。<b>购买即送</b>原理图 PDF、BOM 清单、关键器件替代型号表；完整设计文档与代码在 <b>CSDN</b> 专栏同步更新，可以在作品报告里引用，注明来源即可。
+        </div>
+      </details>
+      <details>
+        <summary>可以做定制吗？改电压 / 改电流 / 改尺寸</summary>
+        <div class="a">
+          常规改动（输出电压、连接器、排针方向、外壳）一般 <b>3–5 天</b> 出样；需要重新设计的（大功率、特殊拓扑、车规）先沟通需求再评估。批量与教学采购有单独价格，直接加微信说数量。
+        </div>
+      </details>
+      <details>
+        <summary>淘宝和嘉立创都是一个价吗？有什么区别</summary>
+        <div class="a">
+          同款同价。淘宝适合<b>单件购买、走售后和评价</b>；嘉立创/立创商城适合<b>和 PCB、元器件一起下单、开票方便</b>。两边库存同步，哪边方便就在哪边下。
+        </div>
+      </details>
+      <details>
+        <summary>多久能到？比赛前一天坏了怎么办</summary>
+        <div class="a">
+          现货 <b>当天 16:00 前下单当日发出</b>，江浙沪次日达。质保 12 个月，非人为损坏可换新；赛期急用可联系客服走<b>加急补发</b>，先寄后返。
+        </div>
+      </details>
+      <details>
+        <summary>我是老师 / 社团，能批量或合作吗</summary>
+        <div class="a">
+          可以。教学套装、实验室批量、竞赛赞助、联合出教程都聊。加微信备注「学校 + 人数」，会给到对应方案。
+        </div>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 联系 ================= -->
+<section id="contact" style="padding-top:0">
+  <div class="wrap">
+    <div class="contact-card">
+      <div>
+        <h2>选型拿不准？<br>把赛题截图发过来</h2>
+        <p>告诉我们题号、负载类型、预算，直接给你一套配置清单。工作日一般 30 分钟内回。</p>
+      </div>
+
+      <div class="contact-rows">
+        <div class="c-row">
+          <span class="k">微信</span><b data-text="wechat">diansai-power</b>
+          <button class="copy-btn" data-copy="wechat">复制</button>
+        </div>
+        <div class="c-row">
+          <span class="k">QQ 群</span><b data-text="qq">123456789</b>
+          <button class="copy-btn" data-copy="qq">复制</button>
+        </div>
+        <div class="c-row">
+          <span class="k">售后</span><b data-text="email">hello@example.com</b>
+          <button class="copy-btn" data-copy="email">复制</button>
+        </div>
+        <a class="c-row" data-link="jlc" href="#" style="font-weight:800">
+          <span class="k">嘉立创</span>立创商城官方店铺
+          <span style="margin-left:auto">→</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    梁山好汉 · 电赛电源模块自研自产<br>
+    淘宝店铺 / 立创商城 · B站 / 抖音 / CSDN 同名账号<br>
+    <span class="sub">本页参数与图片为示例，上线前替换为你的实测内容</span>
+  </div>
+</footer>
+
+<!-- ================= 移动端底部动作条 ================= -->
+<div class="dock">
+  <div class="dock-in">
+    <a class="dock-btn" data-link="jlc" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg><span>嘉立创<small>官方店铺</small></span></a>
+    <a class="dock-btn primary" data-link="taobao" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>淘宝下单<small>现货当天发</small></span></a>
+  </div>
+</div>
+
+<script>
+(function () {
+  var C = window.CONFIG || {};
+
+  // 1. 把 data-link 填成真实链接
+  document.querySelectorAll('[data-link]').forEach(function (el) {
+    var key = el.getAttribute('data-link');
+    var url = C[key];
+    if (url) {
+      el.setAttribute('href', url);
+      el.setAttribute('target', '_blank');
+      el.setAttribute('rel', 'noopener');
+    } else {
+      el.setAttribute('href', '#');
+      el.setAttribute('title', '链接待配置：请填写 window.CONFIG.' + key);
+      el.addEventListener('click', function (e) {
+        e.preventDefault();
+        console.warn('[落地页] 尚未配置 window.CONFIG.' + key);
+      });
+    }
+  });
+
+  // 2. 把 data-text / data-copy 填成真实联系方式
+  document.querySelectorAll('[data-text]').forEach(function (el) {
+    var v = C[el.getAttribute('data-text')];
+    if (v) el.textContent = v;
+  });
+  document.querySelectorAll('[data-copy]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var v = C[btn.getAttribute('data-copy')] || '';
+      var done = function () {
+        var t = btn.textContent; btn.textContent = '已复制';
+        setTimeout(function () { btn.textContent = t; }, 1400);
+      };
+      if (navigator.clipboard && location.protocol === 'https:') {
+        navigator.clipboard.writeText(v).then(done).catch(fallback);
+      } else { fallback(); }
+      function fallback() {
+        var ta = document.createElement('textarea');
+        ta.value = v; ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        try { document.execCommand('copy'); done(); } catch (e) { btn.textContent = '长按复制'; }
+        document.body.removeChild(ta);
+      }
+    });
+  });
+
+  // 3. 平滑滚动（带吸顶导航偏移）
+  document.querySelectorAll('a[href^="#"]').forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = a.getAttribute('href');
+      if (id.length < 2) return;
+      var t = document.querySelector(id);
+      if (!t) return;
+      e.preventDefault();
+      var y = t.getBoundingClientRect().top + window.pageYOffset - 58;
+      window.scrollTo({ top: y, behavior: 'smooth' });
+    });
+  });
+})();
+</script>
+</body>
+</html>
