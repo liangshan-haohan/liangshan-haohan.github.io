@@ -5,7 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="format-detection" content="telephone=no">
 <title>梁山好汉 · 电赛电源模块 | 选型 / 教程 / 购买</title>
-<meta name="description" content="电赛电源模块自研自产：低噪声线性电源、大电流升降压、负压与隔离、电子负载。B站/抖音/CSDN 全套设计教程，嘉立创与淘宝官方下单。">
+<meta name="description" content="梁山好汉 · 电赛电源题方案：STM32G474 主控、辅助电源、驱动电路全套，B站视频讲解、CSDN 软件实现、淘宝可下单成品。">
 <meta name="theme-color" content="#0B1220">
 <meta property="og:title" content="电赛电源模块 · 自研自产">
 <meta property="og:description" content="一块干净的电源，是拿奖的第一步。选型、教程、购买一页搞定。">
@@ -18,22 +18,43 @@
      ============================================================ -->
 <script>
   window.CONFIG = {
-    // 淘宝店铺或单品链接
-    taobao:   "",
-    // 嘉立创 / 立创商城店铺链接
-    jlc:      "",
-    // B站主页
-    bilibili: "",
-    // 抖音主页
-    douyin:   "",
-    // CSDN 主页
-    csdn:     "",
-    // 下面三项直接写文字，会显示在"联系"区
-    wechat:   "diansai-power",
-    qq:       "123456789",
-    email:    "hello@example.com"
+    // ---------- 店铺 ----------
+    taobao:   "https://shop540897883.taobao.com/",   // 淘宝店铺首页（底部按钮用）
+    jlc:      "",                                    // 立创商城：暂未开通
+
+    // ---------- 作品链接（B站视频；留空则回退 B 站主页） ----------
+    w2018: "https://www.bilibili.com/video/BV1rkNB6dEhG/",
+    w2021: "",
+    w2022: "https://www.bilibili.com/video/BV1CrjY63E3S/",
+    w2023: "",
+    w2024: "https://www.bilibili.com/video/BV1nrKH6jEeW/",
+    w2025: "https://www.bilibili.com/video/BV1VFNz65EAs/",
+    wreg: "",
+    wbuck: "",
+
+    // ---------- 商品链接（淘宝详情页，已全部填好） ----------
+    p474:      "https://item.taobao.com/item.htm?id=1051528309163",
+    paux:      "https://item.taobao.com/item.htm?id=1054580929143",
+    pdcsample: "https://item.taobao.com/item.htm?id=1054582345629",
+    pacsample: "https://item.taobao.com/item.htm?id=1054582813765",
+    pinv:      "https://item.taobao.com/item.htm?id=1053601698405",
+    pbuck:     "https://item.taobao.com/item.htm?id=1053601410635",
+    pdap:      "https://item.taobao.com/item.htm?id=1054584277063",
+
+    // ---------- 商品视频 ----------
+    p474_video: "https://www.bilibili.com/video/BV1FxjC6AEZs/",
+    paux_video: "https://www.bilibili.com/video/BV17pLd6fEQi/",
+
+    // ---------- 内容平台 ----------
+    bilibili: "https://space.bilibili.com/3707011720022493",
+    douyin:   "https://www.douyin.com/user/MS4wLjABAAAAl4QHckbG1leYmvG5VEcoutlwrr98tqdbmfh8sKoQPR8etA6QmeMrso1R5Y676OBI",
+    csdn:     "https://blog.csdn.net/2201_75885090",
+
+    // ---------- 联系方式 ----------
+    wechat:   "Jiang15676203556",
+    qq:       "",   // 暂未开通
+    email:    ""    // 暂未开通
   };
-  // 留空时按钮不会跳转，只在控制台提示；填好后自动生效。
 </script>
 
 <style>
@@ -245,6 +266,129 @@
   .wave .cap{display:flex;justify-content:space-between;font-size:11.5px;color:rgba(255,255,255,.55);margin-bottom:6px}
   .wave .cap b{color:#7FE3C0}
 
+  /* ---------- 作品标签（轮播内复用） ---------- */
+  .wk-year{
+    font-size:12px;font-weight:800;color:#fff;background:var(--brand);
+    padding:2px 9px;border-radius:6px;letter-spacing:.02em
+  }
+  .wk-price{
+    font-size:13px;font-weight:800;color:#fff;background:var(--brand);
+    padding:3px 11px;border-radius:7px;letter-spacing:.01em;
+    box-shadow:0 2px 6px rgba(31,107,255,.28)
+  }
+  .wk-tag{font-size:11.5px;font-weight:600;color:var(--muted)}
+
+  /* ---------- 轮播（手机也是左右紧凑布局，省高度） ---------- */
+  .carousel{position:relative;border-radius:16px;overflow:hidden;background:#fff;border:1px solid var(--line);box-shadow:var(--shadow)}
+  .cz-viewport{overflow:hidden}
+  .cz-track{display:flex;transition:transform .42s cubic-bezier(.4,0,.2,1);will-change:transform}
+  .cz-slide{
+    flex:0 0 100%;min-width:100%;display:flex;flex-direction:row;align-items:stretch;
+    cursor:pointer
+  }
+  .cz-media{
+    flex:0 0 36%;background:#F5F7FB;min-height:126px;max-height:126px;
+    overflow:hidden;position:relative
+  }
+  .cz-media.prod{
+    display:grid;place-items:center;background:#F5F7FB;
+    border-right:1px solid var(--line)
+  }
+  .cz-media img{width:100%;height:100%;object-fit:cover;display:block}
+  /* 商品图统一为正方形内缩，避免 1:1 与 3:2 混排时大小不一 */
+  .cz-media.prod img{
+    object-fit:contain;padding:8px;
+    width:100%;height:100%
+  }
+  .cz-info{
+    flex:1 1 auto;min-width:0;padding:11px 12px;
+    display:flex;flex-direction:column;justify-content:center
+  }
+  .cz-meta{display:flex;align-items:center;gap:6px;margin-bottom:5px;flex-wrap:wrap}
+  .cz-info h3{font-size:14.5px;line-height:1.3;margin-bottom:3px}
+  .cz-info p{
+    font-size:12px;color:var(--body);line-height:1.5;
+    display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden
+  }
+  .cz-go{display:inline-block;margin-top:6px;font-size:12px;font-weight:700;color:var(--brand)}
+  .cz-slide:hover .cz-go{text-decoration:underline}
+
+  .cz-arrow{
+    position:absolute;top:66px;transform:translateY(-50%);
+    width:28px;height:28px;border-radius:50%;border:0;cursor:pointer;
+    background:rgba(11,18,32,.38);color:#fff;font-size:15px;line-height:1;
+    display:grid;place-items:center;backdrop-filter:blur(3px);transition:.2s
+  }
+  .cz-arrow:hover{background:rgba(11,18,32,.66)}
+  .cz-arrow.prev{left:4px}
+  .cz-arrow.next{right:4px}
+
+  .cz-dots{display:flex;justify-content:center;gap:5px;padding:0 0 9px}
+  .cz-dots button{
+    width:6px;height:6px;border-radius:50%;border:0;padding:0;cursor:pointer;
+    background:#CBD4E1;transition:.25s
+  }
+  .cz-dots button.on{background:var(--brand);width:15px;border-radius:3px}
+
+  .cz-more{text-align:center;margin-top:10px}
+  .cz-more .btn{height:38px;font-size:13px;padding:0 18px}
+
+  /* ---------- 弹层 ---------- */
+  .modal{
+    position:fixed;inset:0;z-index:200;display:none;
+    background:rgba(11,18,32,.55);backdrop-filter:blur(3px);
+    padding:0;overflow:hidden
+  }
+  .modal.open{display:block}
+  .modal-panel{
+    position:absolute;left:0;right:0;bottom:0;top:6vh;
+    background:var(--bg);border-radius:20px 20px 0 0;
+    display:flex;flex-direction:column;overflow:hidden;
+    animation:slideUp .28s ease-out
+  }
+  @keyframes slideUp{from{transform:translateY(24px);opacity:.6}to{transform:translateY(0);opacity:1}}
+  .modal-head{
+    display:flex;align-items:center;gap:12px;
+    padding:14px 18px;background:#fff;border-bottom:1px solid var(--line);
+    flex:0 0 auto
+  }
+  .modal-head h3{font-size:16px;font-weight:800;color:var(--ink)}
+  .modal-head .sub{font-size:12px}
+  .modal-close{
+    margin-left:auto;width:34px;height:34px;border-radius:50%;border:0;
+    background:#F1F4F9;color:var(--ink);font-size:20px;line-height:1;cursor:pointer
+  }
+  .modal-body{flex:1 1 auto;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:14px 18px 24px}
+
+  .mlist{display:grid;gap:12px;grid-template-columns:1fr}
+  .mi{
+    display:flex;gap:12px;align-items:center;background:#fff;
+    border:1px solid var(--line);border-radius:14px;padding:10px;
+    box-shadow:0 1px 2px rgba(11,18,32,.04);cursor:pointer
+  }
+  .mi:active{background:#FAFCFF}
+  .mi-thumb{
+    width:74px;height:74px;flex:0 0 auto;border-radius:10px;overflow:hidden;background:#F1F4F9
+  }
+  .mi-thumb img{width:100%;height:100%;object-fit:cover}
+  .mi-body{min-width:0;flex:1 1 auto}
+  .mi-body .t{font-size:14px;font-weight:800;color:var(--ink);line-height:1.35}
+  .mi-body .d{font-size:12px;color:var(--muted);margin-top:3px;line-height:1.5}
+  .mi-body .g{font-size:12.5px;font-weight:700;color:var(--brand);margin-top:5px}
+  .mi-price{font-size:14px;font-weight:800;color:var(--cta);white-space:nowrap}
+
+  @media (min-width:640px){
+    .cz-media{flex:0 0 32%;max-height:158px;min-height:158px}
+    .cz-info{padding:14px 18px}
+    .cz-info h3{font-size:16px}
+    .cz-info p{font-size:12.5px;-webkit-line-clamp:3}
+    .cz-arrow{top:50%;width:32px;height:32px;font-size:17px}
+    .mlist{grid-template-columns:repeat(2,1fr)}
+    .modal-panel{left:50%;right:auto;bottom:auto;top:50%;transform:translate(-50%,-50%);
+      width:min(760px,92vw);max-height:82vh;border-radius:20px}
+    @keyframes slideUp{from{transform:translate(-50%,-46%);opacity:.6}to{transform:translate(-50%,-50%);opacity:1}}
+  }
+
   /* ---------- FAQ ---------- */
   .faq{border:1px solid var(--line);border-radius:var(--radius);background:#fff;box-shadow:var(--shadow);overflow:hidden}
   .faq details{border-bottom:1px solid var(--line)}
@@ -349,227 +493,37 @@
 <!-- ================= 首屏：3 秒说清你是谁 ================= -->
 <header class="hero">
   <div class="hero-in">
-    <span class="badge"><i class="dot"></i>自研 · 自产 · 已服务 3000+ 支电赛队伍</span>
-    <h1>让每一块板子，<br>都有一块<em>干净的电源</em>。</h1>
-    <p class="lead">我们只做电赛用电源模块：低噪声线性、大电流升降压、负压与隔离、电子负载。全系实测出波形，B站讲原理、抖音看实测、CSDN 给文档。</p>
+    <span class="badge"><i class="dot"></i>电赛电源题方案 · 自研开源自产</span>
+    <h1>电赛电源题，<br>把<em>整块方案</em>交给你。</h1>
+    <p class="lead">主控板、辅助电源、驱动电路、上位机与能量回馈——从原理图到开源代码全套给。B站有完整视频讲解，CSDN 有软件实现，淘宝可下单成品。</p>
 
     <div class="hero-cta">
       <a class="btn btn-main" data-link="taobao" href="#products">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
-        淘宝直接选型下单
+        淘宝看实拍下单
       </a>
       <a class="btn btn-ghost" data-link="bilibili" href="#guide">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="m17 2-5 5-5-5"/><path d="M7 12v4M17 12v4"/></svg>
-        先看实测再买
+        先看视频讲解
       </a>
     </div>
 
     <div class="hero-stats">
-      <div><b class="num">4.7<span style="font-size:14px">/5</span></b><span>平均评分 · 2.3 万单</span></div>
-      <div><b class="num">&lt;100<span style="font-size:14px">μV</span></b><span>线性模块纹波实测</span></div>
-      <div><b class="num">48<span style="font-size:14px">h</span></b><span>现货当天发出</span></div>
+      <div><b class="num">19</b><span>B站投稿视频</span></div>
+      <div><b class="num">255</b><span>B站粉丝</span></div>
+      <div><b class="num">1.4<span style="font-size:14px">万</span></b><span>视频总播放</span></div>
     </div>
   </div>
 </header>
 
-<!-- ================= 产品 ================= -->
-<section id="products">
+<!-- ================= 三平台（前置：先看内容，再决定买） ================= -->
+<section id="guide" style="background:#fff;border-top:1px solid var(--line)">
   <div class="wrap">
     <div class="sec-head">
       <div>
-        <span class="kicker">Products</span>
-        <h2>按赛题挑，不按参数挑</h2>
-        <p>每一款都标注了「适合哪类赛题」。不确定就直接看下面的选型表，或把需求发我们。</p>
-      </div>
-    </div>
-
-    <div class="grid">
-
-      <article class="card p-card">
-        <div class="p-top">
-          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h4l3-7 4 14 3-7h4"/></svg></span>
-          <div>
-            <div class="p-name">超低噪声线性电源</div>
-            <div class="p-code">PS-LN01 · ±12V / ±15V · 500mA</div>
-          </div>
-        </div>
-        <div class="tags"><span class="tag hot">信号类首选</span><span class="tag">纹波 &lt;100μV</span><span class="tag">双路对称</span></div>
-        <div class="specs">
-          <div><b>±12/15V</b><span>输出</span></div>
-          <div><b>0.5A</b><span>单路</span></div>
-          <div><b>82dB</b><span>PSRR</span></div>
-        </div>
-        <div class="p-foot">
-          <div class="price">¥58<s>¥78</s></div>
-          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
-        </div>
-      </article>
-
-      <article class="card p-card">
-        <div class="p-top">
-          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"/></svg></span>
-          <div>
-            <div class="p-name">大电流升压模块</div>
-            <div class="p-code">PS-BU02 · 12V→24/36V · 8A</div>
-          </div>
-        </div>
-        <div class="tags"><span class="tag hot">功放 / 电机</span><span class="tag">峰值 12A</span><span class="tag">同步整流</span></div>
-        <div class="specs">
-          <div><b>8A</b><span>持续</span></div>
-          <div><b>95%</b><span>效率</span></div>
-          <div><b>300k</b><span>开关频率</span></div>
-        </div>
-        <div class="p-foot">
-          <div class="price">¥69</div>
-          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
-        </div>
-      </article>
-
-      <article class="card p-card">
-        <div class="p-top">
-          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 9h4M7 13h6M7 17h3"/></svg></span>
-          <div>
-            <div class="p-name">同步降压模块</div>
-            <div class="p-code">PS-BK03 · 2.5–24V 输入 · 5A</div>
-          </div>
-        </div>
-        <div class="tags"><span class="tag">FPGA / 舵机</span><span class="tag">数显可调</span><span class="tag">带使能</span></div>
-        <div class="specs">
-          <div><b>0.8–20V</b><span>可调</span></div>
-          <div><b>5A</b><span>输出</span></div>
-          <div><b>±1%</b><span>精度</span></div>
-        </div>
-        <div class="p-foot">
-          <div class="price">¥42</div>
-          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
-        </div>
-      </article>
-
-      <article class="card p-card">
-        <div class="p-top">
-          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 7V5a2 2 0 0 0-2-2H8a2 2 0 0 0-2 2v2"/><rect x="2" y="7" width="20" height="14" rx="2"/><path d="M12 11v6M9 14h6"/></svg></span>
-          <div>
-            <div class="p-name">负压 / 隔离电源</div>
-            <div class="p-code">PS-NG04 · -5V/-12V · 300mA</div>
-          </div>
-        </div>
-        <div class="tags"><span class="tag">双电源运放</span><span class="tag">1.5kV 隔离</span><span class="tag">低噪声</span></div>
-        <div class="specs">
-          <div><b>-5/-12V</b><span>输出</span></div>
-          <div><b>300mA</b><span>单路</span></div>
-          <div><b>1.5kV</b><span>隔离</span></div>
-        </div>
-        <div class="p-foot">
-          <div class="price">¥49</div>
-          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
-        </div>
-      </article>
-
-      <article class="card p-card">
-        <div class="p-top">
-          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 18h16"/><path d="M6 18V9M12 18V5M18 18v-6"/></svg></span>
-          <div>
-            <div class="p-name">电子负载 &amp; 电池模拟</div>
-            <div class="p-code">PS-LD05 · 60W · 恒流/恒压/恒阻</div>
-          </div>
-        </div>
-        <div class="tags"><span class="tag hot">电源类必备</span><span class="tag">0–5A</span><span class="tag">上位机可调</span></div>
-        <div class="specs">
-          <div><b>60W</b><span>功率</span></div>
-          <div><b>5A</b><span>电流</span></div>
-          <div><b>3 模式</b><span>CC/CV/CR</span></div>
-        </div>
-        <div class="p-foot">
-          <div class="price">¥129</div>
-          <a class="btn btn-main" data-link="jlc" href="#">购买</a>
-        </div>
-      </article>
-
-      <article class="card p-card">
-        <div class="p-top">
-          <span class="p-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg></span>
-          <div>
-            <div class="p-name">高精度表头模块</div>
-            <div class="p-code">PS-MT06 · 电压/电流/功率 · 0.1%</div>
-          </div>
-        </div>
-        <div class="tags"><span class="tag">答辩展示</span><span class="tag">OLED</span><span class="tag">串口上传</span></div>
-        <div class="specs">
-          <div><b>0.1%</b><span>精度</span></div>
-          <div><b>0–60V</b><span>量程</span></div>
-          <div><b>UART</b><span>输出</span></div>
-        </div>
-        <div class="p-foot">
-          <div class="price">¥39</div>
-          <a class="btn btn-main" data-link="taobao" href="#">购买</a>
-        </div>
-      </article>
-
-    </div>
-  </div>
-</section>
-
-<!-- ================= 选型表 ================= -->
-<section id="guide" style="background:#fff;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
-  <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kicker">Selection</span>
-        <h2>30 秒选型：你的题该用哪块</h2>
-        <p>电赛现场最常被问的三句：「我这个题要多少 A？」「要不要负压？」「纹波够不够低？」——先对号入座。</p>
-      </div>
-    </div>
-
-    <div class="table-wrap">
-      <table>
-        <thead>
-          <tr><th>赛题方向</th><th>典型负载</th><th>推荐模块</th><th>关键理由</th></tr>
-        </thead>
-        <tbody>
-          <tr>
-            <td><b>信号 / 仪表类</b><br><span class="sub">放大器、滤波器、AD 采集</span></td>
-            <td>运放 ±15V，几十 mA</td>
-            <td><span class="pill">PS-LN01</span> + <span class="pill blue">PS-NG04</span></td>
-            <td>纹波直接进你的信号链，噪声比电流重要</td>
-          </tr>
-          <tr>
-            <td><b>电源类</b><br><span class="sub">DC-DC、充电、稳压</span></td>
-            <td>被测与测试各一路</td>
-            <td><span class="pill">PS-LD05</span> + <span class="pill blue">PS-MT06</span></td>
-            <td>要测别人，先有一台稳定的源和负载</td>
-          </tr>
-          <tr>
-            <td><b>控制 / 运动类</b><br><span class="sub">电机、舵机、云台</span></td>
-            <td>峰值 5–10A，瞬态大</td>
-            <td><span class="pill">PS-BU02</span> + <span class="pill blue">PS-BK03</span></td>
-            <td>看峰值电流和动态响应，不是只看额定</td>
-          </tr>
-          <tr>
-            <td><b>通信 / 高频类</b><br><span class="sub">射频、发射机</span></td>
-            <td>突发电流，怕干扰</td>
-            <td><span class="pill">PS-BK03</span> + <span class="pill blue">PS-NG04</span></td>
-            <td>隔离切断地环路，降压抑制纹波外溢</td>
-          </tr>
-          <tr>
-            <td><b>不确定 / 第一次做</b></td>
-            <td>—</td>
-            <td><span class="pill grey">问我们</span></td>
-            <td>把赛题要求截图发给客服，直接给方案</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-  </div>
-</section>
-
-<!-- ================= 内容平台 ================= -->
-<section>
-  <div class="wrap">
-    <div class="sec-head">
-      <div>
-        <span class="kicker">Content</span>
-        <h2>买之前，先看我们怎么做的</h2>
-        <p>三个平台不是重复发，是三种用途：B站学原理、抖音看实测、CSDN 拿图纸和代码。</p>
+        <span class="kicker">Follow us</span>
+        <h2>先看我们怎么做，再决定买不买</h2>
+        <p>B站讲透原理、抖音看实测、CSDN 拿软件实现。每个入口都写清了能拿到什么。</p>
       </div>
     </div>
 
@@ -578,64 +532,307 @@
         <span class="plat-ico plat-b">B</span>
         <div>
           <h3>B站 · 原理与设计</h3>
-          <p>升降压拓扑怎么选、环路怎么补偿、纹波为什么降不下来。每期配实测波形，长视频讲透。</p>
-          <span class="go">看设计专栏</span>
+          <p>电赛电源题全流程：辅助电源、驱动电路、IR&amp;EG、PCB 设计，19 个视频讲透。</p>
+          <span class="go">看视频合集</span>
         </div>
       </a>
 
       <a class="card plat" data-link="douyin" href="#">
         <span class="plat-ico plat-d">抖</span>
         <div>
-          <h3>抖音 · 实测与上手</h3>
-          <p>30 秒看一块模块的满载温升、纹波、效率。焊接、接线、避坑，一条视频一个结论。</p>
-          <span class="go">看实测短视频</span>
+          <h3>抖音 · 项目演示</h3>
+          <p>项目实拍与效果演示，几十秒看一块板跑起来什么样。</p>
+          <span class="go">看实拍演示</span>
         </div>
       </a>
 
       <a class="card plat" data-link="csdn" href="#">
         <span class="plat-ico plat-c">C</span>
         <div>
-          <h3>CSDN · 图纸与代码</h3>
-          <p>原理图、PCB 设计要点、BOM 清单、STM32 采样与校准代码，可直接复用到你的作品。</p>
-          <span class="go">下载工程文档</span>
+          <h3>CSDN · 软件实现</h3>
+          <p>单相交流电子负载、能量回馈变流器负载、AC-DC 变换电路的完整软件方案。</p>
+          <span class="go">看技术文章</span>
         </div>
       </a>
+    </div>
+
+    <p class="sub" style="margin-top:16px;text-align:center">
+      淘宝店铺：梁山好汉工作室 ｜ 立创商城店铺即将上线
+    </p>
+  </div>
+</section>
+
+<!-- ================= 作品集（轮播 + 查看更多） ================= -->
+<section id="works" style="padding-top:26px;padding-bottom:26px">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:14px">
+      <div>
+        <span class="kicker">Works</span>
+        <h2>这些年做过的电赛电源题</h2>
+        <p>2018–2025，能量回馈、交流电子负载、并联运行，都是实物。</p>
+      </div>
+    </div>
+
+    <div class="carousel" data-carousel="works" data-interval="5000">
+      <div class="cz-viewport">
+        <div class="cz-track">
+          <div class="cz-slide" data-href-key="w2018">
+            <div class="cz-media"><img src="assets/works/2018-energy-feedback/单相能量回馈_w.jpg" alt="变流器负载试验装置" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">2018</span><span class="wk-tag">A 题 · 单相</span></div>
+              <h3>变流器负载试验装置</h3>
+              <p>单相能量回馈。前级整流 + 后级逆变，直流母线电容解耦实现独立控制。</p>
+              <span class="cz-go">看视频讲解 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="w2021">
+            <div class="cz-media"><img src="assets/works/2021-three-port/三端口_w.jpg" alt="三端口变换器" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">2021</span><span class="wk-tag">三端口</span></div>
+              <h3>三端口变换器</h3>
+              <p>电池 + 光伏 + 负载三端口互联，端口间能量双向流动，解耦控制是难点。</p>
+              <span class="cz-go">暂无视频</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="w2022">
+            <div class="cz-media"><img src="assets/works/2022-ac-electronic-load/交流电子负载_w.jpg" alt="单相交流电子负载" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">2022</span><span class="wk-tag">A 题 · 单相</span></div>
+              <h3>单相交流电子负载</h3>
+              <p>前级有效值外环 + 瞬时值内环双环控制，后级母线电压外环，可模拟阻性负载。</p>
+              <span class="cz-go">看视频讲解 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="w2023">
+            <div class="cz-media"><img src="assets/works/2023-inverter-parallel/单项逆变器并联运行系统_w.jpg" alt="单相逆变器并联运行" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">2023</span><span class="wk-tag">A 题 · 并联</span></div>
+              <h3>单相逆变器并联运行</h3>
+              <p>多机并联供电，需要解决环流抑制与功率均分，各机相位幅值必须一致。</p>
+              <span class="cz-go">暂无视频</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="w2024">
+            <div class="cz-media"><img src="assets/works/2024-acac-parallel/AC-AC并联运行系统_w.jpg" alt="AC-AC 变换电路并联" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">2024</span><span class="wk-tag">A 题 · 并联</span></div>
+              <h3>AC-AC 变换电路并联</h3>
+              <p>三路 AC-AC 变换器并联运行，重点在输出电压同步与负载均分。</p>
+              <span class="cz-go">看视频讲解 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="w2025">
+            <div class="cz-media"><img src="assets/works/2025-three-phase-energy-feedback/三相能量回馈_w.jpg" alt="三相能量回馈" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">2025</span><span class="wk-tag">A 题 · 三相</span></div>
+              <h3>三相能量回馈</h3>
+              <p>三相并网能量回馈，相较单相增加相序控制与三相不平衡处理。</p>
+              <span class="cz-go">看视频讲解 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="wreg">
+            <div class="cz-media"><img src="assets/works/small-ac-regulator/交流调压器_w.jpg" alt="小功率交流调压稳压器" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">项目</span><span class="wk-tag">交流调压</span></div>
+              <h3>小功率交流调压稳压器</h3>
+              <p>交流侧连续调压与稳压，给小功率交流负载供电。</p>
+              <span class="cz-go">暂无视频</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="wbuck">
+            <div class="cz-media"><img src="assets/works/buck-boost-5v/三通道输出buck-boost_w.jpg" alt="5V 输入三通道升降压数控电源" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-year">模块</span><span class="wk-tag">数控电源</span></div>
+              <h3>5V 输入三通道升降压数控电源</h3>
+              <p>单 5V 输入升出三路可调电压，升降压一体，带数控接口。</p>
+              <span class="cz-go">暂无视频</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="cz-arrow prev" type="button" aria-label="上一个">‹</button>
+      <button class="cz-arrow next" type="button" aria-label="下一个">›</button>
+      <div class="cz-dots" role="tablist"></div>
+    </div>
+
+    <div class="cz-more">
+      <button class="btn btn-line" type="button" data-open="modal-works">
+        查看全部 8 个作品
+      </button>
     </div>
   </div>
 </section>
 
-<!-- ================= 信任 ================= -->
+<!-- ================= 产品（轮播 + 查看更多） ================= -->
+<section id="products" style="background:#fff;border-top:1px solid var(--line);padding-top:26px;padding-bottom:26px">
+  <div class="wrap">
+    <div class="sec-head" style="margin-bottom:14px">
+      <div>
+        <span class="kicker">Products</span>
+        <h2>7 块板，凑齐电源题方案</h2>
+        <p>主控、辅助电源、采样、功率级到下载器，淘宝现货。</p>
+      </div>
+    </div>
+
+    <div class="carousel" data-carousel="products" data-interval="6000">
+      <div class="cz-viewport">
+        <div class="cz-track">
+          <div class="cz-slide" data-href-key="p474">
+            <div class="cz-media prod"><img src="assets/products/STM32G474/STM32G474_w.jpg" alt="电赛电源题专用主控" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥115</span><span class="wk-tag">方案核心</span></div>
+              <h3>电赛电源题专用主控</h3>
+              <p>STM32G474 · 配套 B 站源码 · 23 人付款</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="paux">
+            <div class="cz-media prod"><img src="assets/products/辅助电源/辅助电源_w.jpg" alt="电赛辅助电源（可调输出）" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥78</span><span class="wk-tag">电源题必备</span></div>
+              <h3>电赛辅助电源（可调输出）</h3>
+              <p>宽压输入 8–80V · 输出 1.25–20V · 7 人付款</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="pdcsample">
+            <div class="cz-media prod"><img src="assets/products/直流电压电流采样/直流电压电流采样_w.jpg" alt="直流电压电流采样" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥68</span><span class="wk-tag">采样</span></div>
+              <h3>直流电压电流采样</h3>
+              <p>直流侧电压电流采集，配主控做闭环与显示。</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="pacsample">
+            <div class="cz-media prod"><img src="assets/products/交流电压电流采样/交流电压电流采样_w.jpg" alt="交流电压电流采样" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥75</span><span class="wk-tag">采样</span></div>
+              <h3>交流电压电流采样</h3>
+              <p>交流侧有效值采集，用于并网与电子负载方案。</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="pinv">
+            <div class="cz-media prod"><img src="assets/products/单相逆变-整流/单相逆变整流_w.jpg" alt="单相逆变 / 整流模块" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥75</span><span class="wk-tag">功率级</span></div>
+              <h3>单相逆变 / 整流模块</h3>
+              <p>单相全桥，可做逆变或整流，能量回馈方案的功率级。</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="pbuck">
+            <div class="cz-media prod"><img src="assets/products/数控双向Buck-Boost/数控双向Buck-Boost_w.jpg" alt="数控双向 Buck-Boost" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥80</span><span class="wk-tag">功率级</span></div>
+              <h3>数控双向 Buck-Boost</h3>
+              <p>双向升降压，能量可回馈，适合电池与母线互联场景。</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+
+          <div class="cz-slide" data-href-key="pdap">
+            <div class="cz-media prod"><img src="assets/products/dap/dap_w.jpg" alt="STM32 DAPLink 下载器" loading="lazy"></div>
+            <div class="cz-info">
+              <div class="cz-meta"><span class="wk-price">¥22</span><span class="wk-tag">调试烧录</span></div>
+              <h3>STM32 DAPLink 下载器</h3>
+              <p>USB / Type-C · 支持串口调试</p>
+              <span class="cz-go">去淘宝购买 →</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <button class="cz-arrow prev" type="button" aria-label="上一个">‹</button>
+      <button class="cz-arrow next" type="button" aria-label="下一个">›</button>
+      <div class="cz-dots" role="tablist"></div>
+    </div>
+
+    <div class="cz-more">
+      <button class="btn btn-line" type="button" data-open="modal-products">
+        查看全部 7 个商品
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 选型表 ================= -->
+<section style="background:#F6F8FB;border-top:1px solid var(--line);border-bottom:1px solid var(--line)">
+  <div class="wrap">
+    <div class="sec-head">
+      <div>
+        <span class="kicker">Selection</span>
+        <h2>你的题该从哪块开始</h2>
+        <p>电赛电源题最常见的四条路线，对照你手上的赛题方向找起点。</p>
+      </div>
+    </div>
+
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>赛题方向</th><th>典型需求</th><th>建议起点</th><th>关键点</th></tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>AC-DC / 整流</b><br><span class="sub">功率因数校正、母线稳压</span></td>
+            <td>前级整流 + 后级 Buck</td>
+            <td><span class="pill">主控 STM32G474</span></td>
+            <td>电压外环 + 电流内环，双环控制是核心</td>
+          </tr>
+          <tr>
+            <td><b>能量回馈 / 逆变</b><br><span class="sub">单相、三相并网</span></td>
+            <td>逆变器带阻性负载，回馈电网</td>
+            <td><span class="pill">辅助电源</span> + <span class="pill blue">主控</span></td>
+            <td>有效值外环 + 瞬时值内环，注意工频过零</td>
+          </tr>
+          <tr>
+            <td><b>交流电子负载</b><br><span class="sub">模拟负载、能量回馈加载</span></td>
+            <td>被测源与负载各一路</td>
+            <td><span class="pill">辅助电源</span> + <span class="pill blue">主控</span></td>
+            <td>PR 电流环做带阻性负载，注意散热余量</td>
+          </tr>
+          <tr>
+            <td><b>辅助电源 / 驱动</b><br><span class="sub">给控制电路与驱动供电</span></td>
+            <td>宽压输入、多路可调输出</td>
+            <td><span class="pill hot">辅助电源模块</span></td>
+            <td>8–80V 宽压输入，1.25–20V 可调，一块搞定</td>
+          </tr>
+          <tr>
+            <td><b>不确定 / 第一次做</b></td>
+            <td>—</td>
+            <td><span class="pill grey">问我们</span></td>
+            <td>把赛题要求截图发微信，直接给方案</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- ================= 信任 / 实测 ================= -->
 <section class="trust">
   <div class="wrap">
     <span class="kicker">Verified</span>
-    <h2>参数不是写上去的，是测出来的</h2>
-    <p class="sub">每批出厂抽检，实测数据存档；有疑问可直接要原始波形截图。</p>
+    <h2>实物做出来，才敢往上写参数</h2>
+    <p class="sub">每一款都在真实赛题电路里跑过。参数以淘宝详情页为准，不玩虚的。</p>
 
     <div class="trust-grid">
-      <div class="t-item"><b class="num">3000+</b><span>服务电赛队伍</span></div>
-      <div class="t-item"><b class="num">2.3 万</b><span>累计成交单</span></div>
-      <div class="t-item"><b class="num">4.7/5</b><span>店铺综合评分</span></div>
-      <div class="t-item"><b class="num">12 个月</b><span>非人为损坏质保</span></div>
-    </div>
-
-    <div class="wave">
-      <div class="cap"><span>PS-LN01 · 输出纹波实测（20MHz 带宽）</span><b>Vpp ≈ 86 μV</b></div>
-      <svg viewBox="0 0 600 90" width="100%" height="86" preserveAspectRatio="none" aria-label="纹波实测波形示意">
-        <defs>
-          <linearGradient id="g1" x1="0" y1="0" x2="0" y2="1">
-            <stop offset="0" stop-color="#38D39F" stop-opacity=".35"/>
-            <stop offset="1" stop-color="#38D39F" stop-opacity="0"/>
-          </linearGradient>
-        </defs>
-        <g stroke="rgba(255,255,255,.09)" stroke-width="1">
-          <line x1="0" y1="18" x2="600" y2="18"/><line x1="0" y1="45" x2="600" y2="45"/><line x1="0" y1="72" x2="600" y2="72"/>
-          <line x1="100" y1="0" x2="100" y2="90"/><line x1="200" y1="0" x2="200" y2="90"/>
-          <line x1="300" y1="0" x2="300" y2="90"/><line x1="400" y1="0" x2="400" y2="90"/><line x1="500" y1="0" x2="500" y2="90"/>
-        </g>
-        <path d="M0 45 Q 25 45 50 45 L 60 44 Q 70 34 80 45 Q 90 56 100 45 L 160 45 Q 170 39 180 45 Q 190 51 200 45 L 250 45 Q 262 43 274 45 Q 286 47 298 45 L 340 45 Q 352 30 364 45 Q 376 60 388 45 L 440 45 Q 452 40 464 45 Q 476 50 488 45 L 540 45 Q 552 38 564 45 Q 576 52 588 45 L 600 45"
-              fill="none" stroke="#38D39F" stroke-width="1.8" stroke-linejoin="round"/>
-        <path d="M0 45 Q 25 45 50 45 L 60 44 Q 70 34 80 45 Q 90 56 100 45 L 160 45 Q 170 39 180 45 Q 190 51 200 45 L 250 45 Q 262 43 274 45 Q 286 47 298 45 L 340 45 Q 352 30 364 45 Q 376 60 388 45 L 440 45 Q 452 40 464 45 Q 476 50 488 45 L 540 45 Q 552 38 564 45 Q 576 52 588 45 L 600 45 L600 90 L0 90 Z" fill="url(#g1)"/>
-      </svg>
+      <div class="t-item"><b class="num">19</b><span>B站视频投稿</span></div>
+      <div class="t-item"><b class="num">1.4 万</b><span>视频总播放</span></div>
+      <div class="t-item"><b class="num">8 年</b><span>电赛电源题经验</span></div>
+      <div class="t-item"><b class="num">3</b><span>在售成品模块</span></div>
     </div>
   </div>
 </section>
@@ -664,15 +861,15 @@
         </div>
       </details>
       <details>
-        <summary>淘宝和嘉立创都是一个价吗？有什么区别</summary>
+        <summary>在淘宝买，还是在立创商城买？</summary>
         <div class="a">
-          同款同价。淘宝适合<b>单件购买、走售后和评价</b>；嘉立创/立创商城适合<b>和 PCB、元器件一起下单、开票方便</b>。两边库存同步，哪边方便就在哪边下。
+          目前只在<b>淘宝「梁山好汉工作室」</b>出售，可以直接下单、走售后和评价。<b>立创商城店铺正在筹备中</b>，上线后会在这里同步。
         </div>
       </details>
       <details>
-        <summary>多久能到？比赛前一天坏了怎么办</summary>
+        <summary>多久能到？比赛前坏了怎么办</summary>
         <div class="a">
-          现货 <b>当天 16:00 前下单当日发出</b>，江浙沪次日达。质保 12 个月，非人为损坏可换新；赛期急用可联系客服走<b>加急补发</b>，先寄后返。
+          具体发货时效以淘宝商品页为准，赛期建议<b>提前下单</b>。收到后有任何问题直接<b>加微信</b>，比走平台售后更快。
         </div>
       </details>
       <details>
@@ -696,21 +893,22 @@
 
       <div class="contact-rows">
         <div class="c-row">
-          <span class="k">微信</span><b data-text="wechat">diansai-power</b>
+          <span class="k">微信</span><b data-text="wechat">Jiang15676203556</b>
           <button class="copy-btn" data-copy="wechat">复制</button>
         </div>
-        <div class="c-row">
-          <span class="k">QQ 群</span><b data-text="qq">123456789</b>
-          <button class="copy-btn" data-copy="qq">复制</button>
+        <div class="c-row" data-soon="qq">
+          <span class="k">QQ 群</span><b>即将上线</b>
         </div>
-        <div class="c-row">
-          <span class="k">售后</span><b data-text="email">hello@example.com</b>
-          <button class="copy-btn" data-copy="email">复制</button>
+        <div class="c-row" data-soon="email">
+          <span class="k">售后邮箱</span><b>即将上线</b>
         </div>
-        <a class="c-row" data-link="jlc" href="#" style="font-weight:800">
-          <span class="k">嘉立创</span>立创商城官方店铺
+        <a class="c-row" data-link="taobao" href="#" style="font-weight:800">
+          <span class="k">淘宝</span>梁山好汉工作室
           <span style="margin-left:auto">→</span>
         </a>
+        <div class="c-row" data-soon="jlc">
+          <span class="k">立创商城</span><b>店铺即将上线</b>
+        </div>
       </div>
     </div>
   </div>
@@ -718,17 +916,193 @@
 
 <footer>
   <div class="wrap">
-    梁山好汉 · 电赛电源模块自研自产<br>
-    淘宝店铺 / 立创商城 · B站 / 抖音 / CSDN 同名账号<br>
-    <span class="sub">本页参数与图片为示例，上线前替换为你的实测内容</span>
+    梁山好汉 · 电赛电源题方案 &amp; 模块<br>
+    淘宝「梁山好汉工作室」 · B站 / 抖音「电赛梁山好汉」 · CSDN「梁山好汉工作室」<br>
+    <span class="sub">立创商城店铺筹备中 · 本页图片为其历年作品实拍</span>
   </div>
 </footer>
 
 <!-- ================= 移动端底部动作条 ================= -->
 <div class="dock">
   <div class="dock-in">
-    <a class="dock-btn" data-link="jlc" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M9 9h6v6H9z"/></svg><span>嘉立创<small>官方店铺</small></span></a>
-    <a class="dock-btn primary" data-link="taobao" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>淘宝下单<small>现货当天发</small></span></a>
+    <a class="dock-btn" data-link="bilibili" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="14" rx="2"/><path d="m17 2-5 5-5-5"/><path d="M7 12v4M17 12v4"/></svg><span>看视频<small>B站全套讲解</small></span></a>
+    <a class="dock-btn primary" data-link="taobao" href="#"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/><path d="M3 6h18"/><path d="M16 10a4 4 0 0 1-8 0"/></svg><span>淘宝下单<small>梁山好汉工作室</small></span></a>
+  </div>
+</div>
+
+<!-- ================= 弹层：全部作品 ================= -->
+<div class="modal" id="modal-works" role="dialog" aria-modal="true" aria-label="全部作品">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <div>
+        <h3>全部作品</h3>
+        <div class="sub">点任意一项，直接看对应视频或文章</div>
+      </div>
+      <button class="modal-close" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="mlist">
+        <div class="mi" data-href-key="w2018">
+          <div class="mi-thumb"><img src="assets/works/2018-energy-feedback/单相能量回馈_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">2018 · 变流器负载试验装置</div>
+            <div class="d">单相能量回馈。前级整流 + 后级逆变，直流母线电容解耦实现独立控制。</div>
+            <div class="g">看视频讲解 →</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="w2021">
+          <div class="mi-thumb"><img src="assets/works/2021-three-port/三端口_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">2021 · 三端口变换器</div>
+            <div class="d">电池 + 光伏 + 负载三端口互联，端口间能量双向流动，解耦控制是难点。</div>
+            <div class="g">暂无视频</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="w2022">
+          <div class="mi-thumb"><img src="assets/works/2022-ac-electronic-load/交流电子负载_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">2022 · 单相交流电子负载</div>
+            <div class="d">前级有效值外环 + 瞬时值内环双环控制，后级母线电压外环，可模拟阻性负载。</div>
+            <div class="g">看视频讲解 →</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="w2023">
+          <div class="mi-thumb"><img src="assets/works/2023-inverter-parallel/单项逆变器并联运行系统_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">2023 · 单相逆变器并联运行</div>
+            <div class="d">多机并联供电，需要解决环流抑制与功率均分，各机相位幅值必须一致。</div>
+            <div class="g">暂无视频</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="w2024">
+          <div class="mi-thumb"><img src="assets/works/2024-acac-parallel/AC-AC并联运行系统_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">2024 · AC-AC 变换电路并联</div>
+            <div class="d">三路 AC-AC 变换器并联运行，重点在输出电压同步与负载均分。</div>
+            <div class="g">看视频讲解 →</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="w2025">
+          <div class="mi-thumb"><img src="assets/works/2025-three-phase-energy-feedback/三相能量回馈_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">2025 · 三相能量回馈</div>
+            <div class="d">三相并网能量回馈，相较单相增加相序控制与三相不平衡处理。</div>
+            <div class="g">看视频讲解 →</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="wreg">
+          <div class="mi-thumb"><img src="assets/works/small-ac-regulator/交流调压器_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">项目 · 小功率交流调压稳压器</div>
+            <div class="d">交流侧连续调压与稳压，给小功率交流负载供电。</div>
+            <div class="g">暂无视频</div>
+          </div>
+        </div>
+
+        <div class="mi" data-href-key="wbuck">
+          <div class="mi-thumb"><img src="assets/works/buck-boost-5v/三通道输出buck-boost_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">模块 · 5V 输入三通道升降压数控电源</div>
+            <div class="d">单 5V 输入升出三路可调电压，升降压一体，带数控接口。</div>
+            <div class="g">暂无视频</div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ================= 弹层：全部商品 ================= -->
+<div class="modal" id="modal-products" role="dialog" aria-modal="true" aria-label="全部商品">
+  <div class="modal-panel">
+    <div class="modal-head">
+      <div>
+        <h3>全部商品</h3>
+        <div class="sub">点任意一项去淘宝详情页</div>
+      </div>
+      <button class="modal-close" type="button" aria-label="关闭">×</button>
+    </div>
+    <div class="modal-body">
+      <div class="mlist">
+        <div class="mi" data-href-key="p474">
+          <div class="mi-thumb"><img src="assets/products/STM32G474/STM32G474_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">电赛电源题专用主控</div>
+            <div class="d">STM32G474 · 配套 B 站源码 · 23 人付款</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥115</div>
+        </div>
+
+        <div class="mi" data-href-key="paux">
+          <div class="mi-thumb"><img src="assets/products/辅助电源/辅助电源_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">电赛辅助电源（可调输出）</div>
+            <div class="d">宽压输入 8–80V · 输出 1.25–20V · 7 人付款</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥78</div>
+        </div>
+
+        <div class="mi" data-href-key="pdcsample">
+          <div class="mi-thumb"><img src="assets/products/直流电压电流采样/直流电压电流采样_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">直流电压电流采样</div>
+            <div class="d">直流侧电压电流采集，配主控做闭环与显示。</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥68</div>
+        </div>
+
+        <div class="mi" data-href-key="pacsample">
+          <div class="mi-thumb"><img src="assets/products/交流电压电流采样/交流电压电流采样_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">交流电压电流采样</div>
+            <div class="d">交流侧有效值采集，用于并网与电子负载方案。</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥75</div>
+        </div>
+
+        <div class="mi" data-href-key="pinv">
+          <div class="mi-thumb"><img src="assets/products/单相逆变-整流/单相逆变整流_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">单相逆变 / 整流模块</div>
+            <div class="d">单相全桥，可做逆变或整流，能量回馈方案的功率级。</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥75</div>
+        </div>
+
+        <div class="mi" data-href-key="pbuck">
+          <div class="mi-thumb"><img src="assets/products/数控双向Buck-Boost/数控双向Buck-Boost_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">数控双向 Buck-Boost</div>
+            <div class="d">双向升降压，能量可回馈，适合电池与母线互联场景。</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥80</div>
+        </div>
+
+        <div class="mi" data-href-key="pdap">
+          <div class="mi-thumb"><img src="assets/products/dap/dap_w.jpg" alt=""></div>
+          <div class="mi-body">
+            <div class="t">STM32 DAPLink 下载器</div>
+            <div class="d">USB / Type-C · 支持串口调试</div>
+            <div class="g">去淘宝购买 →</div>
+          </div>
+          <div class="mi-price">¥22</div>
+        </div>
+
+      </div>
+    </div>
   </div>
 </div>
 
@@ -736,21 +1110,32 @@
 (function () {
   var C = window.CONFIG || {};
 
-  // 1. 把 data-link 填成真实链接
+  // 没配链接时的兜底：去店铺首页 / B站主页，避免点了没反应
+  var FALLBACK = {
+    // 商品
+    p474: 'taobao', paux: 'taobao', pdcsample: 'taobao', pacsample: 'taobao',
+    pinv: 'taobao', pbuck: 'taobao', pdap: 'taobao',
+    // 作品（没有单独视频的，回退到 B 站主页）
+    w2018: 'bilibili', w2021: 'bilibili', w2022: 'bilibili', w2023: 'bilibili',
+    w2024: 'bilibili', w2025: 'bilibili', wreg: 'bilibili', wbuck: 'taobao'
+  };
+
+  // 1. 把 data-link 填成真实链接；未配置的整行标灰，避免用户点了没反应
   document.querySelectorAll('[data-link]').forEach(function (el) {
     var key = el.getAttribute('data-link');
     var url = C[key];
+    if (!url && FALLBACK[key]) url = C[FALLBACK[key]];
     if (url) {
       el.setAttribute('href', url);
       el.setAttribute('target', '_blank');
       el.setAttribute('rel', 'noopener');
     } else {
       el.setAttribute('href', '#');
-      el.setAttribute('title', '链接待配置：请填写 window.CONFIG.' + key);
-      el.addEventListener('click', function (e) {
-        e.preventDefault();
-        console.warn('[落地页] 尚未配置 window.CONFIG.' + key);
-      });
+      el.setAttribute('aria-disabled', 'true');
+      el.style.opacity = '.55';
+      el.style.pointerEvents = 'none';
+      el.title = '即将上线';
+      el.addEventListener('click', function (e) { e.preventDefault(); });
     }
   });
 
@@ -790,6 +1175,151 @@
       var y = t.getBoundingClientRect().top + window.pageYOffset - 58;
       window.scrollTo({ top: y, behavior: 'smooth' });
     });
+  });
+
+  // ============ 4. 轮播 ============
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  function resolve(key) {
+    var u = C[key];
+    if (!u && FALLBACK[key]) u = C[FALLBACK[key]];
+    return u || '';
+  }
+
+  function openUrl(url) {
+    if (!url) return;
+    window.open(url, '_blank', 'noopener');
+  }
+
+  document.querySelectorAll('.carousel').forEach(function (root) {
+    var track = root.querySelector('.cz-track');
+    var slides = Array.prototype.slice.call(root.querySelectorAll('.cz-slide'));
+    var dotsBox = root.querySelector('.cz-dots');
+    var interval = parseInt(root.getAttribute('data-interval'), 10) || 5000;
+    var idx = 0, timer = null, paused = false;
+
+    if (slides.length < 2) {
+      root.querySelectorAll('.cz-arrow').forEach(function (b) { b.style.display = 'none'; });
+      dotsBox.style.display = 'none';
+    }
+
+    // 生成圆点
+    slides.forEach(function (_, i) {
+      var b = document.createElement('button');
+      b.type = 'button';
+      b.setAttribute('aria-label', '第 ' + (i + 1) + ' 个');
+      b.addEventListener('click', function () { go(i); restart(); });
+      dotsBox.appendChild(b);
+    });
+
+    function paint() {
+      track.style.transform = 'translateX(-' + (idx * 100) + '%)';
+      Array.prototype.forEach.call(dotsBox.children, function (d, i) {
+        d.classList.toggle('on', i === idx);
+        d.setAttribute('aria-selected', i === idx ? 'true' : 'false');
+      });
+    }
+
+    function go(i) {
+      idx = (i + slides.length) % slides.length;
+      paint();
+    }
+
+    function next() { go(idx + 1); }
+    function prev() { go(idx - 1); }
+
+    function start() {
+      if (reduceMotion || timer) return;
+      timer = setInterval(function () { if (!paused) next(); }, interval);
+    }
+    function stop() { if (timer) { clearInterval(timer); timer = null; } }
+    function restart() { stop(); start(); }
+
+    var p = root.querySelector('.cz-arrow.prev');
+    var n = root.querySelector('.cz-arrow.next');
+    if (p) p.addEventListener('click', function (e) { e.stopPropagation(); prev(); restart(); });
+    if (n) n.addEventListener('click', function (e) { e.stopPropagation(); next(); restart(); });
+
+    // 悬停 / 触摸时暂停
+    root.addEventListener('mouseenter', function () { paused = true; });
+    root.addEventListener('mouseleave', function () { paused = false; });
+    root.addEventListener('touchstart', function () { paused = true; }, { passive: true });
+    root.addEventListener('touchend', function () {
+      setTimeout(function () { paused = false; }, 4000);
+    }, { passive: true });
+
+    // 滑动切换
+    var sx = 0, sy = 0, tracking = false, moved = false;
+    root.addEventListener('touchstart', function (e) {
+      if (e.touches.length !== 1) return;
+      sx = e.touches[0].clientX; sy = e.touches[0].clientY;
+      tracking = true; moved = false;
+    }, { passive: true });
+    root.addEventListener('touchmove', function (e) {
+      if (!tracking) return;
+      var dx = e.touches[0].clientX - sx;
+      var dy = e.touches[0].clientY - sy;
+      if (Math.abs(dx) > 12 && Math.abs(dx) > Math.abs(dy)) moved = true;
+    }, { passive: true });
+    root.addEventListener('touchend', function (e) {
+      if (!tracking) return;
+      tracking = false;
+      var dx = (e.changedTouches[0].clientX - sx);
+      if (Math.abs(dx) > 45) { dx < 0 ? next() : prev(); restart(); }
+    }, { passive: true });
+
+    // 点击整张卡片 → 跳对应链接（滑动时不触发）
+    slides.forEach(function (s) {
+      s.addEventListener('click', function (e) {
+        if (moved) { moved = false; return; }
+        if (e.target.closest('.cz-arrow')) return;
+        openUrl(resolve(s.getAttribute('data-href-key')));
+      });
+    });
+
+    // 页面不可见时停表，省电
+    document.addEventListener('visibilitychange', function () {
+      document.hidden ? stop() : start();
+    });
+
+    paint();
+    start();
+  });
+
+  // ============ 5. 弹层 ============
+  function openModal(id) {
+    var m = document.getElementById(id);
+    if (!m) return;
+    m.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    m.querySelector('.modal-body').scrollTop = 0;
+  }
+  function closeModal(m) {
+    m.classList.remove('open');
+    document.body.style.overflow = '';
+  }
+
+  document.querySelectorAll('[data-open]').forEach(function (btn) {
+    btn.addEventListener('click', function () { openModal(btn.getAttribute('data-open')); });
+  });
+
+  document.querySelectorAll('.modal').forEach(function (m) {
+    m.addEventListener('click', function (e) {
+      if (e.target === m) closeModal(m);            // 点遮罩关闭
+      if (e.target.closest('.modal-close')) closeModal(m);
+    });
+    // 弹层内每一项 → 跳对应链接
+    m.querySelectorAll('[data-href-key]').forEach(function (item) {
+      item.addEventListener('click', function () {
+        openUrl(resolve(item.getAttribute('data-href-key')));
+      });
+    });
+  });
+
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      document.querySelectorAll('.modal.open').forEach(closeModal);
+    }
   });
 })();
 </script>
